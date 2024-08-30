@@ -1,0 +1,694 @@
+{
+	"info": {
+		"_postman_id": "45134da4-11df-4a54-95dd-01a7eb4d89fa",
+		"name": "Product Managment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4793212",
+		"_collection_link": "https://www.postman.com/blue-resonance-5371/workspace/api-testing/collection/4793212-45134da4-11df-4a54-95dd-01a7eb4d89fa?action=share&source=collection_link&creator=4793212"
+	},
+	"item": [
+		{
+			"name": "CRUD",
+			"item": [
+				{
+					"name": "List all products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Status code is 200\",function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"   pm.test(\"Response time is less than 1s\",function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"   });\r",
+									"\r",
+									"\t pm.test(\"Response has products array\", function (){\r",
+									"   pm.expect(json).to.have.property('products').that.is.an('array');\r",
+									"\r",
+									"\t });\r",
+									"\r",
+									"     pm.test(\"Product list is not empty\",function(){\r",
+									"       pm.expect(json.products).to.have.lengthOf(30);\r",
+									"     });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/products/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a specific product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Status code is 200\",function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains expected product details\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('title');\r",
+									"    pm.expect(responseJson).to.have.property('price');\r",
+									"   \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Product ID matches the requested ID\", function () {\r",
+									"    pm.expect(json).to.have.property('id', 2);  \r",
+									"    // returns the data for a specific product when a valid product ID is provided.\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/products/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Response status is 201 Created\", function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains the created product data\", function () {\r",
+									"    pm.expect(json).to.have.property('id');  // Check that an ID is assigned to the new product\r",
+									"    pm.expect(json).to.have.property('title', 'Test Product');  // Check the title\r",
+									"    pm.expect(json).to.have.property('brand', 'BrandName');\r",
+									"    pm.expect(json).to.have.property('category', 'electronics');\r",
+									"     pm.expect(json).to.have.property('stock', 55);\r",
+									"    pm.expect(json).to.have.property('price', 99.99);  \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Test Product\",\r\n  \"description\": \"A description of the test product.\",\r\n  \"price\": 99.99,\r\n  \"brand\": \"BrandName\",\r\n  \"category\": \"electronics\",\r\n  \"stock\": 55\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/products/add",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Response status is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains the updated product data\", function () {\r",
+									"\r",
+									"pm.expect(json).to.have.property('id');  // Check that the product ID is returned\r",
+									" pm.expect(json).to.have.property('title', 'Updated Test Product');  // Check the updated title\r",
+									"    pm.expect(json).to.have.property('price', 10);  // Check the updated price\r",
+									"    pm.expect(json).to.have.property('stock', 13);  // Check the updated stock\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Updated Test Product\",\r\n  \"description\": \"Updated description of the product.\",\r\n  \"price\": 10,\r\n  \"stock\": 13\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/products/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Response status is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response confirms product deletion\", function () {\r",
+									"  pm.expect(json).to.have.property('isDeleted', true);  // Check that the 'isDeleted' is true\r",
+									"  pm.expect(json).to.have.property('id');  // Check that the response includes the deleted product's ID\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/products/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error handling",
+			"item": [
+				{
+					"name": "Invalid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Response status is 400 Bad Request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test to check if the response contains an error message about invalid data\r",
+									"pm.test(\"Response contains error details about invalid data\", function () {\r",
+									"    // Adjust based on the actual structure of the error response\r",
+									"    pm.expect(json).to.have.property('error');  // Check if there's an 'error' property\r",
+									"    pm.expect(json.error).to.include('Invalid');  // Check if the error message contains 'Invalid'\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"\",               // Invalid: Empty title\r\n  \"price\": \"not-a-number\",   // Invalid: Price should be a number\r\n\"stock\": \"invalid-stock\"   // Invalid: Stock should be a number\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/products/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Non existing product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"console.log(json);\r",
+									"\r",
+									"pm.test(\"Response status is 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response contains error message for non-existing product\", function () {\r",
+									"   \r",
+									" pm.expect(json).to.have.property('message',\"Product with id '10009098' not found\");  \r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/products/10009098",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"10009098"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exploratory testing",
+			"item": [
+				{
+					"name": "Products with different query parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json();\r",
+									"console.log(json)\r",
+									"\r",
+									"pm.test(\"Response status is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response contains expected search results\", function () {\r",
+									"    pm.expect(json.products).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Test for pagination\r",
+									"pm.test(\"Response contains correct number of products\", function () {\r",
+									"    pm.expect(json.products.length).to.be.at.most(30);\r",
+									"});\r",
+									"\r",
+									"// Test for invalid parameters handling\r",
+									"pm.test(\"Response handles invalid parameters\", function () {\r",
+									"    const Text = pm.response.text().toLowerCase();\r",
+									"    pm.expect(Text).to.not.include(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/products?search=phone",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "phone"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product doesn't exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json=pm.response.json()\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Error message is correct\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Product with id '9999' not found\");\r",
+									"});\r",
+									"console.log(json);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/products/9999",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Special Characters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response handles special characters\", function () {\r",
+									" pm.expect(json.title).to.include(\"Special Characters !@#$%^&*()\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"title\": \"Special Characters !@#$%^&*()\",\r\n    \"price\": 99.99,\r\n    \"description\": \"Test description with special characters !@#$%^&*()\",\r\n    \"category\": \"Electronics\",\r\n    \"quantity\": 20\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/products/add",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Stories",
+			"item": [
+				{
+					"name": "User able to see and delete previously created product",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json=pm.response.json()\r",
+											"console.log(json);\r",
+											"\r",
+											"pm.test(\"Response status is 201 Created\", function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"New product contains expected id\", function () {\r",
+											"    pm.environment.set(\"productId\", json.id);\r",
+											"    pm.expect(json).to.have.property('id');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const productId = 100;\r",
+											"pm.environment.set(\"productId\", productId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 100,\r\n  \"title\": \"Test Product\",\r\n  \"description\": \"A description of the test product.\",\r\n  \"price\": 99.99,\r\n  \"brand\": \"BrandName\",\r\n  \"category\": \"electronics\",\r\n  \"stock\": 55\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/products/add",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"products",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json=pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 200\",function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains new added product\", function (){\r",
+											"\tdebugger;\r",
+											"    pm.expect(json.id).to.equal(pm.environment.get(\"productId\"));\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/products/{{productId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"products",
+										"{{productId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json=pm.response.json()\r",
+											"\r",
+											"pm.test(\"Response status is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response confirms created product deletion\", function () {\r",
+											"  pm.expect(json.id).to.equal(pm.environment.get(\"productId\"));\r",
+											" \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/products/{{productId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"products",
+										"{{productId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"description": "List of core business requierements"
+		}
+	]
+}

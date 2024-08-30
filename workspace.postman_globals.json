@@ -1,0 +1,15 @@
+{
+	"id": "6e7a7a27-b30c-4ead-84e0-6654b7045a72",
+	"values": [
+		{
+			"key": "baseURL",
+			"value": "https://dummyjson.com",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2024-08-30T15:11:29.756Z",
+	"_postman_exported_using": "Postman/11.10.1"
+}

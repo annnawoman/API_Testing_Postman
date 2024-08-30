@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "b507b5c4-84be-4770-bef3-5bac7c228836",
+		"name": "Carts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4793212",
+		"_collection_link": "https://www.postman.com/blue-resonance-5371/workspace/api-testing/collection/38010022-b507b5c4-84be-4770-bef3-5bac7c228836?action=share&source=collection_link&creator=4793212"
+	},
+	"item": [
+		{
+			"name": "User Stories",
+			"item": [
+				{
+					"name": "User able to add products to new cart",
+					"item": [
+						{
+							"name": "Create cart",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json=pm.response.json()\r",
+											"console.log(json);\r",
+											"\r",
+											"pm.test(\"Response status is 201 Created\", function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"New cart contains expected id\", function () {\r",
+											"    pm.environment.set(\"cartId\",json.id);\r",
+											"    pm.expect(json.id).to.be.equal(pm.environment.get('cartId'));\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const cartId = 51;\r",
+											"pm.environment.set(\"cartId\", cartId);\r",
+											"\r",
+											"const userId = 142;\r",
+											"pm.environment.set(\"userId\", userId);\r",
+											"\r",
+											"const productsCount = 5;\r",
+											"pm.environment.set(\"productsCount\", productsCount);\r",
+											"\r",
+											"const cartIdToDelete = 1;\r",
+											"pm.environment.set(\"cartIdToDelete\", cartIdToDelete);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"userId\": {{userId}},\r\n    \"products\": [\r\n      {\r\n        \"id\": 144,\r\n        \"quantity\": 4\r\n      },\r\n      {\r\n        \"id\": 99,\r\n        \"quantity\": 1\r\n      },\r\n\t\t\t{\r\n        \"id\": 145,\r\n        \"quantity\": 4\r\n      },\r\n      {\r\n        \"id\": 100,\r\n        \"quantity\": 1\r\n      },\r\n\t\t\t{\r\n        \"id\": 146,\r\n        \"quantity\": 4\r\n      }\r\n    ]\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/carts/add",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"carts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get carts by user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json=pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 200\",function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains new added cart\", function (){\r",
+											"    pm.expect(json.carts).to.have.lengthOf(1);\r",
+											"\t\tpm.expect(json.carts[0].products).to.have.lengthOf(pm.environment.get(\"productsCount\"));\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/carts/user/{{userId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"carts",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete cart",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json=pm.response.json();\r",
+											"\r",
+											"pm.test(\"Response status is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response confirms deletion of new added cart\", function () {\r",
+											"  pm.expect(json.id).to.equal(pm.environment.get(\"cartIdToDelete\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/carts/{{cartIdToDelete}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"carts",
+										"{{cartIdToDelete}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
