@@ -40,3 +40,15 @@ API testing using Postman
 
 ### 5. User Stories 
 - User able to view, edit, add and delete previously created product
+
+  ## Project Overview
+
+This project demonstrates [brief description of the project].
+
+## Screenshots
+
+The following screenshots show the Postman dashboard with all my tests and their results.
+[Test Collections Overview]()
+*This screenshot shows an overview of all test collections.*
+
+
