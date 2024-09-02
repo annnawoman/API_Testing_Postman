@@ -20,7 +20,7 @@ API testing using Postman
 ### 3. Product Management
 - **Endpoints**:
   - `GET /products` - List all products.
-  - 'GET /products/{id}
+  - 'GET /products/{id} - Get specific product
   - `POST /products/add` - Add a new product 
   - `PUT /products/{id}` - Update an existing product 
   - `DELETE /products/{id}` - Delete a product 
