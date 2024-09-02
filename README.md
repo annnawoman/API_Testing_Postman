@@ -40,9 +40,3 @@ API testing using Postman
 
 ### 5. User Stories 
 - User able to view, edit, add and delete previously created product
-
-## How to Run
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
