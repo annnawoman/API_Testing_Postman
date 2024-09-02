@@ -47,8 +47,8 @@ This project demonstrates [brief description of the project].
 
 ## Screenshots
 
-The following screenshots show the Postman dashboard with all my tests and their results.
-[Test Collections Overview]()
-*This screenshot shows an overview of all test collections.*
+This screenshot shows an overview of all test collections.
+[Test Collections Overview](https://github.com/annnawoman/API_Testing_Postman/blob/master/Screenshots%20.PNG)
+
 
 
